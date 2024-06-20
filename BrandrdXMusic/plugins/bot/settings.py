@@ -56,6 +56,7 @@ async def gib_repo(client, CallbackQuery, _):
     await CallbackQuery.edit_message_media(
         InputMediaVideo("https://te.legra.ph/file/ef47f077b671f69f8d8f0.mp4"),
         reply_markup=InlineKeyboardMarkup(
+            [InlineKeyboardButton(text="ᴄʜᴀᴛᴛɪɴɢ ✨", url=f"https://t.me/friendship_forever_group143")],
             [[InlineKeyboardButton(text="ʙᴀᴄᴋ", callback_data=f"settingsback_helper")]]
         ),
     )
