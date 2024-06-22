@@ -50,133 +50,69 @@ def welcomepic(pic, user, chatname, id, uname):
     draw = ImageDraw.Draw(background)
     font = ImageFont.truetype('BrandrdXMusic/assets/font.ttf', size=110)
     welcome_font = ImageFont.truetype('BrandrdXMusic/assets/font.ttf', size=60)
-        # Draw user's name with shining red fill and dark saffron border
-    draw.text((1770, 1015), f": {user}", fill=(255, 0, 0), font=font)
-    draw.text(
-        (1770, 1015),
-        f": {user}",
-        fill=None,
-        font=font,
-        stroke_fill=(255, 153, 51),
-        stroke_width=6,
-    )
-
-    # Draw user's id with shining blue fill and white border
-    draw.text((1530, 1230), f": {id}", fill=(0, 0, 139))
-    draw.text(
-        (1530, 1230),
-        f": {id}",
-        fill=None,
-        font=font,
-        stroke_fill=(255, 255, 255),
-        stroke_width=0,
-    )
-
-    # Draw user's username with white fill and green border
-    draw.text((2030, 1450), f": {uname}", fill=(255, 255, 255), font=font)
-    draw.text(
-        (2030, 1450),
-        f": {uname}",
-        fill=None,
-        font=font,
-        stroke_fill=(0, 128, 0),
-        stroke_width=6,
-    )
-
-    # Resize photo and position
-    pfp_position = (255, 323)
+    draw.text((2100, 1420), f'ID: {id}', fill=(12000, 12000, 12000), font=font)
+    pfp_position = (1990, 435)
     background.paste(pfp, pfp_position, pfp)
-
-    # Calculate circular outline coordinates
-    center_x = pfp_position[0] + pfp.width / 2
-    center_y = pfp_position[1] + pfp.height / 2
-    radius = min(pfp.width, pfp.height) / 2
-
-    # Draw circular outlines
-    draw.ellipse(
-        [
-            (center_x - radius - 10, center_y - radius - 10),
-            (center_x + radius + 10, center_y + radius + 10),
-        ],
-        outline=(255, 153, 51),
-        width=25,
-    )  # Saffron border
-
-    draw.ellipse(
-        [
-            (center_x - radius - 20, center_y - radius - 20),
-            (center_x + radius + 20, center_y + radius + 20),
-        ],
-        outline=(255, 255, 255),
-        width=25,
-    )  # White border
-
-    draw.ellipse(
-        [
-            (center_x - radius - 30, center_y - radius - 30),
-            (center_x + radius + 30, center_y + radius + 30),
-        ],
-        outline=(0, 128, 0),
-        width=25,
-    )  # Green border
     background.save(f"downloads/welcome#{id}.png")
-    return f"downloads/welcome#{id}.png
-    
-@Client.on_chat_member_updated(filters.group, group=-3)
-async def greet_new_member(
-    client: Client, member: ChatMemberUpdated
-):  # Added 'client' and 'member' as parameters
+    return f"downloads/welcome#{id}.png"
+
+@app.on_chat_member_updated(filters.group, group=-3)
+async def greet_group(_, member: ChatMemberUpdated):
     chat_id = member.chat.id
-    count = await client.get_chat_members_count(chat_id)
     A = await wlcm.find_one(chat_id)
-    if A:
+    if (
+        not member.new_chat_member
+        or member.new_chat_member.status in {"banned", "left", "restricted"}
+        or member.old_chat_member
+    ):
         return
-
     user = member.new_chat_member.user if member.new_chat_member else member.from_user
-
-    # Add the modified condition here
-    if member.new_chat_member and not member.old_chat_member:
-
+    try:
+        pic = await app.download_media(
+            user.photo.big_file_id, file_name=f"pp{user.id}.png"
+        )
+    except AttributeError:
+        pic = "BrandrdXMusic/assets/Brandedwel2.png"
+    if (temp.MELCOW).get(f"welcome-{member.chat.id}") is not None:
         try:
-            pic = await client.download_media(
-                user.photo.big_file_id, file_name=f"pp{user.id}.png"
-            )
-        except AttributeError:
-            pic = "BrandrdXMusic/assets/Brandedwel2.png"
-        if (temp.MELCOW).get(f"welcome-{member.chat.id}") is not None:
-            try:
-                await temp.MELCOW[f"welcome-{member.chat.id}"].delete()
-            except Exception as e:
-                LOGGER.error(e)
-        try:
-            welcomeimg = welcomepic(
-                pic, user.first_name, member.chat.title, user.id, user.username
-            )
-            button_text = "๏ ᴠɪᴇᴡ ɴᴇᴡ ᴍᴇᴍʙᴇʀ ๏"
-            add_button_text = "๏ ᴋɪᴅɴᴀᴘ ᴍᴇ ๏"
-            deep_link = f"{user.id}"
-            add_link = f"https://t.me/Moonlightmusicbot?startgroup=true"
-            temp.MELCOW[f"welcome-{member.chat.id}"] = await client.send_photo(
-                member.chat.id,
-                photo=welcomeimg,
-                caption=f"""
-**❅────✦ ᴡᴇʟᴄᴏᴍᴇ ✦────❅**
-
-▰▰▰▰▰▰▰▰▰▰▰▰▰
-**➻ ɴᴀᴍᴇ »** {user.mention}
-**➻ ɪᴅ »** `{user.id}`
-**➻ ᴜ_ɴᴀᴍᴇ »** @{user.username}
-**➻ ᴛᴏᴛᴀʟ ᴍᴇᴍʙᴇʀs »** {count}
-▰▰▰▰▰▰▰▰▰▰▰▰▰
-
-**❅─────✧❅✦❅✧─────❅**
-""",
-                reply_markup=InlineKeyboardMarkup(
-                    [
-                        [InlineKeyboardButton(button_text, user_id=deep_link)],
-                        [InlineKeyboardButton(text=add_button_text, url=add_link)],
-                    ]
-                ),
-            )
+            await temp.MELCOW[f"welcome-{member.chat.id}"].delete()
         except Exception as e:
             LOGGER.error(e)
+    try:
+        welcomeimg = welcomepic(
+            pic, user.first_name, member.chat.title, user.id, user.username
+        )
+        temp.MELCOW[f"welcome-{member.chat.id}"] = await app.send_photo(
+            member.chat.id,
+            photo=welcomeimg,
+            caption=f"""
+𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝗧𝗼 {member.chat.title}
+➖➖➖➖➖➖➖➖➖➖➖
+๏ 𝗡𝗔𝗠𝗘 ➠ {user.mention}
+๏ 𝗜𝗗 ➠ {user.id}
+๏ 𝐔𝐒𝐄𝐑𝐍𝐀𝐌𝐄 ➠ @{user.username}
+๏ 𝐌𝐀𝐃𝐄 𝐁𝐘 ➠ @BRANDEDKING82
+➖➖➖➖➖➖➖➖➖➖➖
+""",
+            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(f"⦿ ᴀᴅᴅ ᴍᴇ ⦿", url=f"https://t.me/BRANDED_KUDI_BOT?startgroup=true")]])
+        )
+    except Exception as e:
+        LOGGER.error(e)
+    try:
+        os.remove(f"downloads/welcome#{user.id}.png")
+        os.remove(f"downloads/pp{user.id}.png")
+    except Exception as e:
+        pass
+
+@app.on_message(filters.new_chat_members & filters.group, group=-1)
+async def bot_wel(_, message):
+    for u in message.new_chat_members:
+        if u.id == app.me.id:
+            await app.send_message(LOG_CHANNEL_ID, f"""
+NEW GROUP
+➖➖➖➖➖➖➖➖➖➖➖
+𝗡𝗔𝗠𝗘: {message.chat.title}
+𝗜𝗗: {message.chat.id}
+𝐔𝐒𝐄𝐑𝐍𝐀𝐌𝐄: @{message.chat.username}
+➖➖➖➖➖➖➖➖➖➖➖
+""")
