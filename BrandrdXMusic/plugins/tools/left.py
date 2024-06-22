@@ -103,7 +103,7 @@ async def member_has_left(client: app, member: ChatMemberUpdated):
                 chat_id=member.chat.id,
                 photo=welcome_photo,
                 caption=caption,
-                reply_markup=InlineKeyboardMarkup([
+                reply_markup=InlineKeyboardMarkup(
                     [InlineKeyboardButton(button_text, url=deep_link)],
                    [InlineKeyboardButton(text="ᴄʜᴀᴛᴛɪɴɢ ✨", url=f"https://t.me/friendship_forever_group143")],
             )
