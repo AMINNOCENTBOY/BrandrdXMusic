@@ -106,6 +106,7 @@ async def member_has_left(client: app, member: ChatMemberUpdated):
                 reply_markup=InlineKeyboardMarkup([
                     [InlineKeyboardButton(button_text, url=deep_link)]
                 ])
+                [InlineKeyboardButton(text="ᴄʜᴀᴛᴛɪɴɢ ✨", url=f"https://t.me/friendship_forever_group143")],
             )
 
             # Schedule a task to delete the message after 30 seconds
