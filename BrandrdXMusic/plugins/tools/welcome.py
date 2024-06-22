@@ -54,7 +54,7 @@ def welcomepic(pic, user, chatname, id, uname):
     pfp_position = (1990, 435)
     background.paste(pfp, pfp_position, pfp)
     background.save(f"downloads/welcome#{id}.png")
-    return f"downloads/welcome#{id}.png
+    return f"downloads/welcome#{id}.png"
  
 
  @Client.on_message(filters.command("welcome") & ~filters.private)
