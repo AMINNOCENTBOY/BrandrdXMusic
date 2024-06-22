@@ -75,36 +75,36 @@ async def greet_group(_, member: ChatMemberUpdated):
         pic = "BrandrdXMusic/assets/Brandedwel2.png"
     if (temp.MELCOW).get(f"welcome-{member.chat.id}") is not None:
         try:
-            await temp.MELCOW[f"welcome-{member.chat.id}"].delete()
-        except Exception as e:
-            LOGGER.error(e)
-    try:
-        welcomeimg = welcomepic(
-            pic, user.first_name, member.chat.title, user.id, user.username
-        )
-        temp.MELCOW[f"welcome-{member.chat.id}"] = await app.send_photo(
-            member.chat.id,
-            photo=welcomeimg,
-            caption=f"""
-𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝗧𝗼 {member.chat.title}
-➖➖➖➖➖➖➖➖➖➖➖
-๏ 𝗡𝗔𝗠𝗘 ➠ {user.mention}
-๏ 𝗜𝗗 ➠ {user.id}
-๏ 𝐔𝐒𝐄𝐑𝐍𝐀𝐌𝐄 ➠ @{user.username}
-๏ 𝐌𝐀𝐃𝐄 𝐁𝐘 ➠ {"**[✭ᴋɪɴɢ✭](https://t.me/InnocentIdkaaa)"}
-➖➖➖➖➖➖➖➖➖➖➖
+            welcomeimg = welcomepic(
+                pic, user.first_name, member.chat.title, user.id, user.username
+            )
+            button_text = "๏ ᴠɪᴇᴡ ɴᴇᴡ ᴍᴇᴍʙᴇʀ ๏"
+            add_button_text = "๏ ᴋɪᴅɴᴀᴘ ᴍᴇ ๏"
+            deep_link = f"{user.id}"
+            add_link = f"https://t.me/TG_VC_BOT?startgroup=true"
+            temp.MELCOW[f"welcome-{member.chat.id}"] = await client.send_photo(
+                member.chat.id,
+                photo=welcomeimg,
+                caption=f"""
+**❅────✦ ᴡᴇʟᴄᴏᴍᴇ ✦────❅**
+
+▰▰▰▰▰▰▰▰▰▰▰▰▰
+**➻ ɴᴀᴍᴇ »** {user.mention}
+**➻ ɪᴅ »** `{user.id}`
+**➻ ᴜ_ɴᴀᴍᴇ »** @{user.username}
+**➻ ᴛᴏᴛᴀʟ ᴍᴇᴍʙᴇʀs »** {count}
+▰▰▰▰▰▰▰▰▰▰▰▰▰
+
+**❅─────✧❅✦❅✧─────❅**
 """,
-            reply_markup=InlineKeyboardMarkup(
-                [
-                [InlineKeyboardButton(f"✭ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴏᴜᴘ✭", url=f"https://t.me/MoonLightxD_bot?startgroup=true")]]),
-                [InlineKeyboardButton(f"ᴠɪᴇᴡ ɴᴇᴡ ᴍᴇᴍʙᴇʀ", url=f"tg://openmessage?user_id={user.id}")]]),
-        )
-    except Exception as e:
-        LOGGER.error(e)
-    try:
-        os.remove(f"downloads/welcome#{user.id}.png")
-        os.remove(f"downloads/pp{user.id}.png")
-    except Exception as e:
+                reply_markup=InlineKeyboardMarkup(
+                    [
+                        [InlineKeyboardButton(button_text, user_id=deep_link)],
+                        [InlineKeyboardButton(text=add_button_text, url=add_link)],
+                    ]
+                ),
+            )
+        except Exception as e:
         pass
 
 @app.on_message(filters.new_chat_members & filters.group, group=-1)
