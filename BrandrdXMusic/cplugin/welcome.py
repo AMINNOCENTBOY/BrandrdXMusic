@@ -1,15 +1,52 @@
+from pyrogram import Client, filters
+from pyrogram.enums import ChatMemberStatus
+from pyrogram.errors import (
+    ChatAdminRequired,
+    InviteRequestSent,
+    UserAlreadyParticipant,
+    UserNotParticipant,
+)
+from pyrogram.errors import RPCError
+from pyrogram.types import ChatMemberUpdated, InlineKeyboardMarkup, InlineKeyboardButton
+from os import environ
+from typing import Union, Optional
+from PIL import Image, ImageDraw, ImageFont
+from os import environ
+import requests
+import random
+from BrandrdXMusic import userbot
+from BrandrdXMusic.misc import SUDOERS
+from pyrogram import *
+from pyrogram.types import *
+from BrandrdXMusic.utils.branded_ban import admin_filter
+import random
+from pyrogram import Client, filters
+from pyrogram.types import ChatJoinRequest, InlineKeyboardButton, InlineKeyboardMarkup
+from PIL import Image, ImageDraw, ImageFont
+import asyncio, os, time, aiohttp
+from pathlib import Path
+from PIL import Image, ImageDraw, ImageFont, ImageEnhance
+from asyncio import sleep
+from pyrogram import filters, Client, enums
+from pyrogram.enums import ParseMode
+from pyrogram import *
+from pyrogram.types import *
+from logging import getLogger
+from BrandrdXMusic.utils.branded_ban import admin_filter
+import os
+from BrandrdXMusic.misc import SUDOERS
+from PIL import ImageDraw, Image, ImageFont, ImageChops
+from pyrogram import *
+from pyrogram.types import *
 from logging import getLogger
 
-from PIL import Image, ImageChops, ImageDraw, ImageEnhance, ImageFont
-from pyrogram import Client, enums, filters
-from pyrogram.types import ChatMemberUpdated, InlineKeyboardButton, InlineKeyboardMarkup
 
 random_photo = [
-    "https://telegra.ph/file/1949480f01355b4e87d26.jpg",
-    "https://telegra.ph/file/3ef2cc0ad2bc548bafb30.jpg",
-    "https://telegra.ph/file/a7d663cd2de689b811729.jpg",
-    "https://telegra.ph/file/6f19dc23847f5b005e922.jpg",
-    "https://telegra.ph/file/2973150dd62fd27a3a6ba.jpg",
+    "https://graph.org/file/e36ca3c73f08d4c04b9b6.jpg",
+    "https://graph.org/file/970955ce30672302943c1.jpg",
+    "https://graph.org/file/e38d003cff04e6dffb5b2.jpg",
+    "https://graph.org/file/98f6187aa4d3d3954ccdc.jpg",
+    "https://graph.org/file/f4b34351a59061ba1c61b.jpg",
 ]
 # --------------------------------------------------------------------------------- #
 
@@ -59,13 +96,13 @@ def circle(pfp, size=(500, 500), brightness_factor=10):
 
 
 def welcomepic(pic, user, chatname, id, uname, brightness_factor=1.3):
-    background = Image.open("VIPMUSIC/assets/wel2.png")
+    background = Image.open("BrandrdXMusic/assets/wel2.png")
     pfp = Image.open(pic).convert("RGBA")
     pfp = circle(pfp, brightness_factor=brightness_factor)
     pfp = pfp.resize((892, 880))
     draw = ImageDraw.Draw(background)
-    font = ImageFont.truetype("VIPMUSIC/assets/font.ttf", size=95)
-    welcome_font = ImageFont.truetype("VIPMUSIC/assets/font.ttf", size=45)
+    font = ImageFont.truetype("BrandrdXMusic/assets/font.ttf", size=95)
+    welcome_font = ImageFont.truetype("BrandrdXMusic/assets/font.ttf", size=45)
 
     # Draw user's name with shining red fill and dark saffron border
     draw.text((1770, 1015), f": {user}", fill=(255, 0, 0), font=font)
@@ -176,7 +213,7 @@ async def auto_state(client: Client, message):  # Added 'message' as a parameter
         await message.reply("**sᴏʀʀʏ ᴏɴʟʏ ᴀᴅᴍɪɴs ᴄᴀɴ ᴇɴᴀʙʟᴇ ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ!**")
 
 
-@Client.on_chat_member_updated(filters.group, group=-3)
+@Client.on_chat_member_updated(filters.group, group=-13)
 async def greet_new_member(
     client: Client, member: ChatMemberUpdated
 ):  # Added 'client' and 'member' as parameters
@@ -196,7 +233,7 @@ async def greet_new_member(
                 user.photo.big_file_id, file_name=f"pp{user.id}.png"
             )
         except AttributeError:
-            pic = "VIPMUSIC/assets/upic.png"
+            pic = "BrandrdXMusic/assets/upic.png"
         if (temp.MELCOW).get(f"welcome-{member.chat.id}") is not None:
             try:
                 await temp.MELCOW[f"welcome-{member.chat.id}"].delete()
@@ -209,7 +246,7 @@ async def greet_new_member(
             button_text = "๏ ᴠɪᴇᴡ ɴᴇᴡ ᴍᴇᴍʙᴇʀ ๏"
             add_button_text = "๏ ᴋɪᴅɴᴀᴘ ᴍᴇ ๏"
             deep_link = f"{user.id}"
-            add_link = f"https://t.me/TG_VC_BOT?startgroup=true"
+            add_link = f"https://t.me/BRANDED_KUDI_BOT?startgroup=true"
             temp.MELCOW[f"welcome-{member.chat.id}"] = await client.send_photo(
                 member.chat.id,
                 photo=welcomeimg,
