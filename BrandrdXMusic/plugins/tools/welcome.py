@@ -56,8 +56,7 @@ def welcomepic(pic, user, chatname, id, uname):
     background.save(f"downloads/welcome#{id}.png")
     return f"downloads/welcome#{id}.png"
  
-
- @Client.on_message(filters.command("welcome") & ~filters.private)
+@Client.on_message(filters.command("welcome") & ~filters.private)
 async def auto_state(client: Client, message):  # Added 'message' as a parameter
     usage = "**ᴜsᴀɢᴇ:**\n**⦿ /welcome [on|off]**"
     if len(message.command) == 1:
