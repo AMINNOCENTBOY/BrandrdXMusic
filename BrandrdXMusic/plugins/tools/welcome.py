@@ -105,6 +105,7 @@ async def greet_group(_, member: ChatMemberUpdated):
                 ),
             )
         except Exception as e:
+            LOGGER.error(e)
         
 @app.on_message(filters.new_chat_members & filters.group, group=-1)
 async def bot_wel(_, message):
